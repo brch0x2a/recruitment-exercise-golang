@@ -41,6 +41,7 @@ func (s *AssemblySpot) AssembleVehicle() (*vehicle.Car, error) {
 
 	time.Sleep(1 * time.Second)
 
+	
 	return s.vehicleToAssemble, nil
 }
 
