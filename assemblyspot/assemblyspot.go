@@ -39,7 +39,6 @@ func (s *AssemblySpot) AssembleVehicle() (*vehicle.Car, error) {
 	go s.assembleSeats()
 	go s.assembleWindows()
 
-	
 	time.Sleep(1 * time.Second)
 
 	return s.vehicleToAssemble, nil
