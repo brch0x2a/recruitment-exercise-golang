@@ -41,19 +41,96 @@ func (f *Factory) StartAssemblingProcess(amountOfVehicles int) {
 	for _, vehicle := range vehicleList {
 		fmt.Println("Assembling vehicle...")
 
-		idleSpot := <-f.AssemblingSpots
-		idleSpot.SetVehicle(&vehicle)
-		vehicle, err := idleSpot.AssembleVehicle()
 
-		if err != nil {
+
+		select {
+
+			case idleSpot := <-f.AssemblingSpots:
+				idleSpot.SetVehicle(&vehicle)
+
+				vehicle, err := idleSpot.AssembleVehicle()
+		
+				if err != nil {
+					continue
+				}
+		
+				vehicle.TestingLog = f.testCar(vehicle)
+				vehicle.AssembleLog = idleSpot.GetAssembledLogs()
+		
+				idleSpot.SetVehicle(nil)
+		
+				f.AssemblingSpots <- idleSpot
+
+			case idleSpot2 := <-f.AssemblingSpots:
+				idleSpot2.SetVehicle(&vehicle)
+
+				vehicle, err := idleSpot2.AssembleVehicle()
+		
+				if err != nil {
+					continue
+				}
+		
+				vehicle.TestingLog = f.testCar(vehicle)
+				vehicle.AssembleLog = idleSpot2.GetAssembledLogs()
+		
+				idleSpot2.SetVehicle(nil)
+		
+				f.AssemblingSpots <- idleSpot2
+
+			case idleSpot3 := <-f.AssemblingSpots:
+				idleSpot3.SetVehicle(&vehicle)
+
+				vehicle, err := idleSpot3.AssembleVehicle()
+		
+				if err != nil {
+					continue
+				}
+		
+				vehicle.TestingLog = f.testCar(vehicle)
+				vehicle.AssembleLog = idleSpot3.GetAssembledLogs()
+		
+				idleSpot3.SetVehicle(nil)
+		
+				f.AssemblingSpots <- idleSpot3
+
+			case idleSpot4 := <-f.AssemblingSpots:
+				idleSpot4.SetVehicle(&vehicle)
+
+				vehicle, err := idleSpot4.AssembleVehicle()
+		
+				if err != nil {
+					continue
+				}
+		
+				vehicle.TestingLog = f.testCar(vehicle)
+				vehicle.AssembleLog = idleSpot4.GetAssembledLogs()
+		
+				idleSpot4.SetVehicle(nil)
+		
+				f.AssemblingSpots <- idleSpot4
+
+			case idleSpot5 := <-f.AssemblingSpots:
+				idleSpot5.SetVehicle(&vehicle)
+
+				vehicle, err := idleSpot5.AssembleVehicle()
+		
+				if err != nil {
+					continue
+				}
+		
+				vehicle.TestingLog = f.testCar(vehicle)
+				vehicle.AssembleLog = idleSpot5.GetAssembledLogs()
+		
+				idleSpot5.SetVehicle(nil)
+		
+				f.AssemblingSpots <- idleSpot5
+		default:
 			continue
-		}
+	}
 
-		vehicle.TestingLog = f.testCar(vehicle)
-		vehicle.AssembleLog = idleSpot.GetAssembledLogs()
 
-		idleSpot.SetVehicle(nil)
-		f.AssemblingSpots <- idleSpot
+
+
 	}
 }
 
