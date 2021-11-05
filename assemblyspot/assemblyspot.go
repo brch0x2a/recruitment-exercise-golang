@@ -31,19 +31,22 @@ func (s *AssemblySpot) AssembleVehicle() (*vehicle.Car, error) {
 		return nil, errors.New("no vehicle set to start assembling")
 	}
 
-	s.assembleChassis()
-	s.assembleTires()
-	s.assembleEngine()
-	s.assembleElectronics()
-	s.assembleDash()
-	s.assembleSeats()
-	s.assembleWindows()
+	go s.assembleChassis()
+	go s.assembleTires()
+	go s.assembleEngine()
+	go s.assembleElectronics()
+	go s.assembleDash()
+	go s.assembleSeats()
+	go s.assembleWindows()
+
+	time.Sleep(1 * time.Second)
 
 	return s.vehicleToAssemble, nil
 }
 
 func (s *AssemblySpot) assembleChassis() {
 	s.vehicleToAssemble.Chassis = "Assembled"
+	
 	time.Sleep(1 * time.Second)
 	s.assemblyLog += fmt.Sprintf("Chassis at [%s], ", time.Now().Format("2006-01-02 15:04:05.000"))
 }
